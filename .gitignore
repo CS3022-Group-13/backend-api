@@ -5,6 +5,11 @@
 ### dotenv ###
 .env
 
+####
+ecosystem.config.js
+yarn.lock
+package-lock.json
+
 ### Node ###
 # Logs
 logs
@@ -106,7 +111,7 @@ dist
 # FuseBox cache
 .fusebox/
 
-# DynamoDB Local files
+# DynamoDB Account files
 .dynamodb/
 
 # TernJS port file
