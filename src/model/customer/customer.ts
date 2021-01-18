@@ -1,5 +1,5 @@
 import {MError} from "../merror";
-import {knex, Model, resolver} from "../index";
+import {knex, resolver} from "../index";
 import {Transaction} from "knex";
 
 export interface Customer{

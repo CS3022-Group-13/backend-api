@@ -17,6 +17,7 @@ const parseValidatorResult: Handler = (req, res, next) => {
         .send()
 }
 
-export function inspectBuilder(...validators: ValidationChain[]): EHandler[] {
+export function inspectBuilder(...validators: ValidationChain[]): EHandler {
+    //@ts-ignore
     return [...validators, parseValidatorResult as EHandler]
 }
