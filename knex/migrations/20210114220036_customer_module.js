@@ -4,7 +4,7 @@ exports.up = function(knex) {
     .createTable(
         'customer',
         table => {
-            table.uuid('customer_id', 20).primary()
+            table.uuid('customer_id').primary()
             table.string('first_name', 50)
             table.string('last_name', 50)
             table.string("phone",20)
@@ -13,7 +13,7 @@ exports.up = function(knex) {
     .createTable(
         'customer_account',
         table => {
-            table.uuid('customer_id', 20).primary().references('customer_id').inTable('customer')
+            table.uuid('customer_id').primary().references('customer_id').inTable('customer')
             table.string('username', 50)
             table.string('password', 100)
             table.boolean('status') // Disabled = 0 or Enable = 1

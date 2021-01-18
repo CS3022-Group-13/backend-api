@@ -2,7 +2,7 @@ import {resolver, knex} from "../index";
 import {MError} from "../merror";
 import {Customer, CustomerModel} from "./customer";
 
-export interface CustomerAccount{
+export interface CustomerAccount {
     customerId: string;
     username: string;
     password: string;

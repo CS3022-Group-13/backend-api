@@ -2,14 +2,10 @@ import {Handler} from "express";
 import {ResponseBuilder} from "./res-builder";
 import {Response} from "../types";
 
-interface TokenPair {
-    access: string,
-    refresh?: string
-}
 
 export interface ResponseData {
     data?: any,
-    token?: TokenPair,
+    token?: string,
     message: string
 }
 

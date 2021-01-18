@@ -23,13 +23,8 @@ export class ResponseBuilder {
         this._res.json(this._data);
     };
 
-    token(access: string): ResponseBuilder {
-        this._data.token = {access: access};
-        return this;
-    }
-
-    tokenPair(access: string, refresh: string) {
-        this._data.token = {access: access, refresh: refresh};
+    token(token: string): ResponseBuilder {
+        this._data.token =  token;
         return this;
     }
 

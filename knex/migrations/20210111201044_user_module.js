@@ -6,7 +6,7 @@ exports.up = function (knex) {
                 table.string('type', 20).primary()
             })
         .createTable(
-            'user',
+            'user_data',
             table => {
                 table.uuid('user_id').primary()
                 table.string('first_name', 50)
@@ -18,7 +18,7 @@ exports.up = function (knex) {
         .createTable(
             'user_account',
             table => {
-                table.uuid('user_id').primary().references('user_id').inTable('user')
+                table.uuid('user_id').primary().references('user_id').inTable('user_data')
                 table.string('username', 50).unique()
                 table.string('password', 100)
                 table.boolean('verified')
@@ -28,6 +28,6 @@ exports.up = function (knex) {
 exports.down = function (knex) {
     return knex.schema
         .dropTable('user_account')
-        .dropTable('user')
+        .dropTable('user_data')
         .dropTable('user_type')
 };
