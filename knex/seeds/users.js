@@ -3,12 +3,6 @@ const {v4: UUID} = require('uuid')
 const {hashSync} = require('bcrypt')
 
 
-const user_types = [
-    "Inventory Manager",
-    "Sales Manager",
-    "Administrator"
-]
-
 const user_seeds = [
     {
         user_id: UUID(),
@@ -30,19 +24,11 @@ const user_seeds = [
 exports.seed = async function (knex) {
     // Deletes ALL existing entries
     await knex('user_account').del()
-    await knex('user').del()
-    await knex('user_type').del()
-
-    // Inserting User Types
-    for (const t of user_types) {
-        await knex('user_type').insert({
-            type: t
-        })
-    }
+    await knex('user_data').del()
 
     // Inserting Sample Users
     for (const s of user_seeds) {
-        await knex('user').insert({
+        await knex('user_data').insert({
             user_id: s.user_id,
             ...s.user_data
         })

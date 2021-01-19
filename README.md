@@ -35,13 +35,4 @@ USERNAME  : eims_user
 PASSWORD  : eims_user
 ```
 
-# API end-points
-
-`GET` `/api`
-
-## User Module
-
-`POST` `/api/user/login`
-`POST` `/api/user/login`
-`POST` `/api/user/regiser`
 

@@ -1,8 +1,8 @@
 import {MError} from "../merror";
-import {knex, Model, resolver} from "../index";
+import {knex, resolver} from "../index";
 import {Transaction} from "knex";
 
-export interface User {
+export interface UserData {
     userId: string;
     firstName: string;
     lastName: string;
@@ -11,16 +11,16 @@ export interface User {
     userType: string;
 }
 
-export class UserModel {
+export class UserDataModel {
 
-    static tableName = 'user'
+    static tableName = 'userData'
 
     /**
      * Find user record by user id
      * @param userId: UUID (string)
      */
-    static async findBy_userId(userId: string): Promise<[MError, User]> {
-        const [error, data] = await resolver<User[]>(
+    static async findBy_userId(userId: string): Promise<[MError, UserData]> {
+        const [error, data] = await resolver<UserData[]>(
             knex(this.tableName).where({userId}),
             {
                 singleOnly: true
@@ -30,11 +30,11 @@ export class UserModel {
     }
 
     /**
-     * Add User Data Entry :: Support Transactions
+     * Add User_data Data Entry :: Support Transactions
      * @param trx : knex transaction object
      * @param userData
      */
-    static async trx_createUserDataEntry(trx: Transaction, userData: User): Promise<any> {
+    static async trx_createUserDataEntry(trx: Transaction, userData: UserData): Promise<any> {
         return trx(this.tableName).insert(userData);
     }
 }

@@ -1,6 +1,6 @@
 import {resolver, knex} from "../index";
 import {MError} from "../merror";
-import {User, UserModel} from "./user";
+import {UserData, UserDataModel} from "./user_data";
 
 export interface UserAccount {
     userId: string
@@ -33,10 +33,10 @@ export class UserAccountModel {
      * @param userData : user data such as names
      * @param accountData : details such as credentials
      */
-    static async createAccount_local(userData: User, accountData: UserAccount): Promise<MError> {
+    static async createAccount_local(userData: UserData, accountData: UserAccount): Promise<MError> {
         const [error] = await resolver<any>(
             knex.transaction(async (trx): Promise<any> => {
-                    await UserModel.trx_createUserDataEntry(trx, userData)
+                    await UserDataModel.trx_createUserDataEntry(trx, userData)
                     await trx(this.tableName).insert(accountData);
                 }
             ), {allowUndefined: true}

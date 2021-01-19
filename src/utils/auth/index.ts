@@ -1,18 +1,18 @@
 import {EHandler, Handler} from "../types";
-import {TokenMan} from "../token-man";
-import {HRule, InspectorBuilder, CHECK} from "../inspector";
+import {TokenMan} from "../tokenMan";
+
 
 /**
  * :: STEP 1
  */
-const inspectAuthHeader = InspectorBuilder(
-    [
-        HRule("authorization")(
-            (value: string) => CHECK.jwt()(value.split(" ")[1]),
-            {error:"Invalid authorization header", required: true}
-        )
-    ]
-)
+// const inspectAuthHeader = InspectorBuilder(
+//     [
+//         HRule("authorization")(
+//             (value: string) => CHECK.jwt()(value.split(" ")[1]),
+//             {error:"Invalid authorization header", required: true}
+//         )
+//     ]
+// )
 
 /**
  * :: STEP 2
@@ -40,19 +40,19 @@ const parsePayload: Handler = (req, res, next) => {
 
 /**
  * :: STEP 3 Builder
- * @param userType
+ * @param userTypes
  */
-function buildUserFilter(userType: "Regular" | "Administrator"): Handler {
+function buildUserFilter(userTypes: string[]): Handler {
     return (req, res, next) => {
         const {r} = res;
 
-        if (req.user.userType === userType) {
+        if (userTypes.includes(req.user.userType)) {
             next();
             return;
         }
 
         r.status.UN_AUTH()
-            .message(`Only ${userType} users are allowed to access`)
+            .message(`Only ${userTypes.toString()} users are allowed to access`)
             .send()
     }
 }
@@ -62,6 +62,6 @@ function buildUserFilter(userType: "Regular" | "Administrator"): Handler {
  * Request Handler Chain
  */
 export default {
-    regular: [inspectAuthHeader, parsePayload as EHandler, buildUserFilter("Regular") as EHandler],
-    admin: [inspectAuthHeader, parsePayload as EHandler, buildUserFilter("Administrator") as EHandler]
+    any: [parsePayload as EHandler],
+    admin: [parsePayload as EHandler, buildUserFilter(["Administrator"]) as EHandler]
 }

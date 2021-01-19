@@ -2,7 +2,7 @@
 exports.up = function(knex) {
     return knex.schema
         .createTable(
-            'finished_product',
+            'product',
             table => {
                 table.uuid('product_id').primary()
                 table.string('product_name', 20)
@@ -11,10 +11,10 @@ exports.up = function(knex) {
 
             })
         .createTable(
-            "finished_product_stock",
+            "product_stock",
             table=>{
                 table.uuid("stock_id").primary()
-                table.uuid('product_id').references('product_id').inTable('finished_product')
+                table.uuid('product_id').references('product_id').inTable('product')
                 table.integer('quantity', 10)
                 table.decimal('unit_price')
                 table.timestamp("date")
@@ -28,7 +28,7 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
     return knex.schema
-    .dropTable('finished_produc_stock')
-    .dropTable('finished_product')
+    .dropTable('product_stock')
+    .dropTable('product')
 
 };

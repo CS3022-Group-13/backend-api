@@ -5,9 +5,7 @@ import {knexSnakeCaseMappers} from "objection";
 import Knex, {Config} from "knex";
 import {knex_error_resolver} from "./resolver";
 import {MError} from "./merror";
-import {UserModel} from "./user/user";
-import {UserAccountModel} from "./user/userAccount";
-import {UserType} from "./user/userType";
+
 
 
 /**
@@ -44,6 +42,40 @@ export const resolver = knex_error_resolver
 
 
 /**
+ * User Module
+ */
+import {UserDataModel} from "./user/user_data";
+import {UserAccountModel} from "./user/user_account";
+import {UserType} from "./user/user_type";
+
+/**
+ * Customer Module
+ */
+import {CustomerModel} from "./customer/customer";
+import {CustomerAccountModel} from "./customer/customer_account";
+
+/**
+ * Raw Material Module
+ */
+import {MaterialModel} from "./material/material";
+import {MaterialStockModel} from "./material/matrial_stock";
+
+/**
+ * Order Module
+ */
+import {OrderModel} from "./order/order";
+import {InvoiceModel} from "./order/invoice";
+import {OrderItemModel} from "./order/order_item";
+import {OrderStatus} from "./order/order_status";
+import {PaymentModel} from "./order/payments";
+
+/**
+ * Finished Product Module
+ */
+import {ProductModel} from "./product/product";
+import {ProductStockModel} from "./product/product_stock";
+
+/**
  * Database Models for external use
  * ERR   <- Enum that contains common errors returned by user
  * MODEL <- Model contains static functions which returns [MError, model]
@@ -51,12 +83,30 @@ export const resolver = knex_error_resolver
  */
 export const model = {
     ERR: MError,
-    user: UserModel,
-    userAccount: UserAccountModel,
-    userType: UserType
+    user: {
+        user: UserDataModel,
+        account: UserAccountModel,
+        type: UserType
+    },
+    customer: {
+        customer: CustomerModel,
+        account: CustomerAccountModel
+    },
+    material: {
+        material: MaterialModel,
+        stock: MaterialStockModel
+    },
+    product: {
+        product: ProductModel,
+        stock: ProductStockModel
+    },
+    order: {
+        order: OrderModel,
+        invoice: InvoiceModel,
+        item: OrderItemModel,
+        status: OrderStatus,
+        payment: PaymentModel
+    }
 };
 
-
-export abstract class Model {
-}
 

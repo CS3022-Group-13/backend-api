@@ -1,30 +1,16 @@
 import {compare} from "bcrypt";
 import {EHandler, Handler} from "../../utils/types";
 import {model} from "../../model";
-import {CHECK, InspectorBuilder, BRule} from "../../utils/inspector";
-import {TokenMan} from "../../utils/token-man";
+import {TokenMan} from "../../utils/tokenMan";
+import {inspectBuilder, body} from "../../utils/inspect";
 
 /**
  * :: STEP 1
- * Validate Request
+ * validating fields
  */
-const inspectRequest = InspectorBuilder(
-    [
-        BRule("username")(
-            CHECK.length(0, 30),
-            {
-                error: "username is required",
-                required: true
-            }
-        ),
-        BRule("password")(
-            CHECK.length(0, 30),
-            {
-                error: "password is required",
-                required: true
-            }
-        ),
-    ]
+const inspector = inspectBuilder(
+    body('username').exists().withMessage("username is required"),
+    body('password').exists().withMessage("password is required"),
 )
 
 /**
@@ -35,7 +21,7 @@ const validateCredentials: Handler = async (req, res, next) => {
     const {r} = res;
     const {username, password} = req.body;
 
-    const [error, account] = await model.userAccount.findBy_username(username);
+    const [error, account] = await model.user.account.findBy_username(username);
 
     if (error === model.ERR.NO_ERROR) {
         // password verification
@@ -53,7 +39,7 @@ const validateCredentials: Handler = async (req, res, next) => {
 
     if (error === model.ERR.NOT_FOUND) {
         r.status.NOT_FOUND()
-            .message("User doesn't exists")
+            .message("User_data doesn't exists")
             .send();
         return;
     }
@@ -76,21 +62,20 @@ const ServeTokenPair: Handler = async (req, res) => {
     const {userId, userType} = req.body;
 
     // creating payload model
-    const [error, userData] = await model.user.findBy_userId(userId);
+    const [error, userData] = await model.user.user.findBy_userId(userId);
     if (error !== model.ERR.NO_ERROR) {
         r.prebuild.ISE().send();
         return;
     }
 
     // create token
-    const refreshToken = TokenMan.getRefreshToken(userId);
     const accessToken = TokenMan.getAccessToken(userData);
 
     r.status.OK()
         .data({
             userData
         })
-        .tokenPair(accessToken, refreshToken)
+        .token(accessToken)
         .message("Success")
         .send();
 };
@@ -98,4 +83,4 @@ const ServeTokenPair: Handler = async (req, res) => {
 /**
  * Request Handler Chain
  */
-export default [inspectRequest, validateCredentials as EHandler, ServeTokenPair as EHandler]
+export default [inspector, validateCredentials as EHandler, ServeTokenPair as EHandler]

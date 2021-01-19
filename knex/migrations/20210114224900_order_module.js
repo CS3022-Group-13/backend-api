@@ -9,7 +9,7 @@ exports.up = function (knex) {
 
         )
         .createTable(
-            'sales_order',
+            'order',
             table => {
                 table.uuid('order_id').primary()
                 table.uuid('customer_id').references('customer_id').inTable('customer')
@@ -20,8 +20,8 @@ exports.up = function (knex) {
         .createTable(
             'order_item',
             table => {
-                table.uuid('order_id').references('order_id').inTable('sales_order')
-                table.uuid('product_id').references('product_id').inTable('finished_product')
+                table.uuid('order_id').references('order_id').inTable('order')
+                table.uuid('product_id').references('product_id').inTable('product')
                 table.integer('quantity', 10)
                 table.decimal('unit_price')
                 table.primary(['order_id', 'product_id'])
@@ -32,14 +32,14 @@ exports.up = function (knex) {
             'invoice',
             table => {
                 table.uuid('invoice_id').primary()
-                table.uuid('order_id').references('order_id').inTable('sales_order')
+                table.uuid('order_id').references('order_id').inTable('order')
                 table.timestamp('invoice_date')
                 table.decimal('invoice_total')
 
             }
         )
         .createTable(
-            'payments',
+            'payment',
             table => {
                 table.uuid('payment_id').primary()
                 table.uuid('customer_id').references('customer_id').inTable('customer')
@@ -52,9 +52,9 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
     return knex.schema
-        .dropTable('payments')
+        .dropTable('payment')
         .dropTable('invoice')
         .dropTable('order_item')
-        .dropTable('sales_order')
+        .dropTable('order')
         .dropTable('order_status')
 };

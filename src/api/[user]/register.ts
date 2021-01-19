@@ -2,69 +2,20 @@ import {EHandler, Handler} from "../../utils/types";
 import {v4 as UUID} from "uuid";
 import {model} from "../../model";
 import {encrypt_password} from "../../utils/hasher";
-import {BRule, CHECK, InspectorBuilder} from "../../utils/inspector";
+import {body, inspectBuilder} from "../../utils/inspect";
 
 /**
  * :: STEP 1
- * Validate Request
+ * validating fields
  */
-const inspectRequest = InspectorBuilder(
-    [
-        BRule("username")(
-            CHECK.length(5, 10),
-            {
-                error: "Username must have 4 - 10 characters",
-                required: true
-            }
-        ),
-        BRule("password")(
-            CHECK.password({
-                minLength: 6,
-            }),
-            {
-                error: "password is not strong enough. "
-                + "It must be contained at least one "
-                + "digit, symbol(other than @), lowercase character, uppercase character "
-                + "and must be contained at least 6 characters",
-                required: true
-            }
-        ),
-        BRule("firstName")(
-            CHECK.length(3, 20),
-            {
-                error: "firstName length should be 3 to 20 characters",
-                required: true
-            }
-        ),
-        BRule("lastName")(
-            CHECK.length(3, 20),
-            {
-                error: "lastName length should be 3 to 20 characters",
-                required: false
-            }
-        ),
-        BRule("email")(
-            CHECK.email(),
-            {
-                error: "Invalid email address",
-                required: true
-            }
-        ),
-        // BRule("telephone")(
-        //     CHECK.telephone(),
-        //     {
-        //         error: "Invalid telephone address",
-        //         required: false
-        //     }
-        // ),
-        BRule("userType")(
-            CHECK.length(0, 30),
-            {
-                error: "userType is required",
-                required: true
-            }
-        )
-    ]
+const inspector = inspectBuilder(
+    body('username').exists().withMessage("username is required"),
+    body('password').exists().withMessage("password is required"),
+    body('firstName').exists().withMessage("firstName is required"),
+    body('lastName').exists().withMessage("lastName is required"),
+    body('email').exists().withMessage("email is required"),
+    body('telephone').exists().withMessage("telephone is required"),
+    body('userType').exists().withMessage("userType is required"),
 )
 
 /**
@@ -98,7 +49,7 @@ const addUserDetails: Handler = async (req, res) => {
     };
 
     // Sync model to database
-    const error = await model.userAccount.createAccount_local(
+    const error = await model.user.account.createAccount_local(
         userData,
         {
             userId,
@@ -132,4 +83,4 @@ const addUserDetails: Handler = async (req, res) => {
 /**
  * Request Handler Chain
  */
-export default [addUserDetails as EHandler]
+export default [inspector, addUserDetails as EHandler]
