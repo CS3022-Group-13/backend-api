@@ -28,6 +28,24 @@ export class UserAccountModel {
         return [error, data[0]];
     }
 
+    static async findBy_userId(userId: string): Promise<[MError, UserAccount]> {
+        const [error, data] = await resolver<UserAccount[]>(
+            knex(this.tableName).where({userId}),
+            {
+                singleOnly: true
+            }
+        );
+        return [error, data[0]];
+    }
+
+    static async updateBy_userId(userId: string, password?: string, verified?: boolean): Promise<MError> {
+        const [error] = await resolver<UserAccount[]>(
+            knex(this.tableName).update({password}).where({userId, verified}),
+            {allowUndefined: true}
+        );
+        return error;
+    }
+
     /**
      * Create new user account
      * @param userData : user data such as names

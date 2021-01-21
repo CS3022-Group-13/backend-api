@@ -60,7 +60,7 @@ function buildUserFilter(userTypes: string[]): Handler {
 
 /**
  * Request Handler Chain
- */
+ */ 
 export default {
     any: [parsePayload as EHandler],
     admin: [parsePayload as EHandler, buildUserFilter(["Administrator"]) as EHandler]
