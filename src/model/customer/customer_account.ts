@@ -2,17 +2,18 @@ import {resolver, knex} from "../index";
 import {MError} from "../merror";
 import {Customer, CustomerModel} from "./customer";
 
+
 export interface CustomerAccount {
     customerId: string;
     username: string;
     password: string;
-    verified: boolean;
+    status: boolean;
 }
 
 export class CustomerAccountModel {
 
     static tableName = 'customerAccount';
-
+    
     /**
      * Find customer account record by customer id
      * @param customerId: UUID (string)
@@ -26,6 +27,21 @@ export class CustomerAccountModel {
         )
         return [error, data[0]]
     }
+
+    /**
+     * Find customer account by username
+     * @param username : string
+     */
+    static async findBy_username(username: string): Promise<[MError, CustomerAccount]> {
+        const [error, data] = await resolver<CustomerAccount[]>(
+            knex(this.tableName).where({username}),
+            {
+                singleOnly: true
+            }
+        );
+        return [error, data[0]];
+    }
+
 
     /**
      * Create new customer account
