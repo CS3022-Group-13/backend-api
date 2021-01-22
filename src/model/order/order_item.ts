@@ -1,5 +1,6 @@
 import {MError} from "../merror";
 import {knex, resolver} from "../index";
+import { Transaction } from "knex";
 
 export interface OrderItem {
     orderId: string
@@ -20,5 +21,14 @@ export class OrderItemModel {
             }
         )
         return [error, data[0]]
+    }
+
+    /**
+     * Add Order Item Data Entries :: Support Transactions
+     * @param trx : knex transaction object
+     * @param orderItemsData
+     */
+    static async trx_createOrderItemDataEntries(trx: Transaction, orderItemsData: Array<OrderItem>): Promise<any> {
+        return trx(this.tableName).insert(orderItemsData);
     }
 }
