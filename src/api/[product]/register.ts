@@ -1,7 +1,6 @@
 import {EHandler, Handler} from "../../utils/types";
 import {v4 as UUID} from "uuid";
 import {model} from "../../model";
-import {encrypt_password} from "../../utils/hasher";
 import {body, inspectBuilder} from "../../utils/inspect";
 
 /**
@@ -36,6 +35,7 @@ const addProductDetails: Handler = async (req, res) => {
             .message("Successfully registered a new product")
             .data({
                 productId,
+                productName: req.body.productName
             })
             .send();
         return;

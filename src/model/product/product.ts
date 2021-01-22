@@ -37,6 +37,17 @@ export class ProductModel {
             {allowUndefined: true});
         return error;
     }
+
+    static async deleteBy_productID(productID: string): Promise<any> {
+        const error = await resolver<Product[]>(
+            knex(this.tableName).where({productID}).del(),
+            {
+                singleOnly: true
+            }
+        );
+        return error;
+    }
+
 }
 
 
