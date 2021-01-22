@@ -37,14 +37,23 @@ export class UserDataModel {
         return error
     }
 
-    static async getUserBy_query(email?: string, verified?: boolean): Promise<[MError, UserData]> {
+    static async getUserBy_query(query: any): Promise<[MError, UserData]> {
+        // Cleaning Query
+        const fields = ["email", "verified"]
+        Object.keys(query).forEach((k) => {
+            if (fields.includes(k))
+                (query[k] === null || query[k] === undefined) && delete query[k];
+            else
+                delete query[k];
+        });
+
         const [error, data] = await resolver(
             knex(this.tableName).join("userAccount",
                 "userData.userId", "=", "userAccount.userId"
             ).select(
                 "userData.*",
                 "userAccount.verified"
-            ).where({email, verified})
+            ).where(query)
         )
         return [error, data as UserData]
     }

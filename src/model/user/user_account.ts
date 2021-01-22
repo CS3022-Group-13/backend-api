@@ -1,4 +1,4 @@
-import {resolver, knex} from "../index";
+import {knex, resolver} from "../index";
 import {MError} from "../merror";
 import {UserData, UserDataModel} from "./user_data";
 
@@ -38,9 +38,22 @@ export class UserAccountModel {
         return [error, data[0]];
     }
 
-    static async updateBy_userId(userId: string, password?: string, verified?: boolean): Promise<MError> {
+    static async updateBy_userId(userId: string, data: any): Promise<MError> {
+        // Cleaning Query
+        const fields = ["password", "verified"]
+        Object.keys(data).forEach((k) => {
+            if (fields.includes(k))
+                (data[k] === null || data[k] === undefined) && delete data[k];
+            else
+                delete data[k];
+        });
+
+        if (data == {}) {
+            return MError.NO_ERROR
+        }
+
         const [error] = await resolver<UserAccount[]>(
-            knex(this.tableName).update({password}).where({userId, verified}),
+            knex(this.tableName).update(data).where({userId}),
             {allowUndefined: true}
         );
         return error;
@@ -54,7 +67,7 @@ export class UserAccountModel {
     static async createAccount_local(userData: UserData, accountData: UserAccount): Promise<MError> {
         const [error] = await resolver<any>(
             knex.transaction(async (trx): Promise<any> => {
-                    await UserDataModel.trx_createUserDataEntry(trx, userData)
+                    await UserDataModel.trx_createUserDataEntry(trx, userData);
                     await trx(this.tableName).insert(accountData);
                 }
             ), {allowUndefined: true}

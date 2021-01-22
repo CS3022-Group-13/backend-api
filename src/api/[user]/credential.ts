@@ -12,7 +12,8 @@ import {compare} from "bcrypt";
 const inspector = inspectBuilder(
     param("userId").exists().withMessage("userId is required")
         .isUUID(4).withMessage("Invalid user id"),
-    body('currentPassword').exists().withMessage("specify current password"),
+    body('currentPassword').exists()
+        .withMessage("specify current password"),
     body('password').exists().withMessage("specify new password"),
 )
 
@@ -28,6 +29,13 @@ const updateUserCredentials: Handler = async (req, res) => {
     // Setup Data
     const userId = req.params.userId
     const {currentPassword, password} = req.body
+
+    if (req.user.userId !== userId) {
+        r.status.UN_AUTH()
+            .message("Only owner can change credentials")
+            .send()
+        return;
+    }
 
     // Sync model to database
     const [error1, account] = await model.user.account.findBy_userId(userId)
@@ -49,7 +57,7 @@ const updateUserCredentials: Handler = async (req, res) => {
     const hashed = await encrypt_password(password)
 
     // Update credentials
-    const error = await model.user.account.updateBy_userId(userId, hashed)
+    const error = await model.user.account.updateBy_userId(userId, {password: hashed})
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()

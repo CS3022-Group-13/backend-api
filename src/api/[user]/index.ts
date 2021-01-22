@@ -14,13 +14,13 @@ const rUser = Router();
 rUser.post('/login', userLogin)
 rUser.post('/register', userRegister)
 
-rUser.put('/update-details/:userId', userUpdate)
-rUser.put('/update-credentials/:userId', updateCredential)
+rUser.put('/update-details/:userId*?', auth.any, userUpdate)
+rUser.put('/update-credentials/:userId', auth.any, updateCredential)
 
 // allow query
 rUser.get('/get-users', auth.admin, getAll)
 rUser.get('/get-details/:userId*?', auth.any, getDetails)
 
-rUser.purge('/change-status/:userId', auth.admin, verify)
+rUser.put('/change-status/:userId', auth.admin, verify)
 
 export default rUser

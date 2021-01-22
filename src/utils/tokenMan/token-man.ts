@@ -1,8 +1,9 @@
+require('dotenv').config()
 import jwt from "jsonwebtoken";
 import {randomBytes} from "crypto"
 
 function generateSecretKey(): string {
-    return randomBytes(48).toString('hex')
+    return randomBytes(24).toString('hex')
 }
 
 export class TokenMan {
@@ -22,13 +23,15 @@ export class TokenMan {
 
         // Create Tables
         this._refreshTokenStore = new Map<any, string>()
+
+
     }
 
     private _signAccessToken(payload: any): string {
         return jwt.sign(
             payload,
             this._accessSecretKey,
-            {expiresIn: this._accessToken_validTime}
+            // {expiresIn: this._accessToken_validTime}
         );
     }
 
@@ -105,9 +108,9 @@ export class TokenMan {
     verifyAccessToken(token: string): any {
         try {
             const decode: any = jwt.verify(token, this._accessSecretKey);
-            return decode.payload
+            return decode
         } catch (e) {
-            console.log(e)
+            // console.log(e)
             return null
         }
     }

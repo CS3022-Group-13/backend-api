@@ -1,18 +1,14 @@
 import {EHandler, Handler} from "../types";
 import {TokenMan} from "../tokenMan";
-
+import {inspectBuilder, header} from "../inspect";
 
 /**
  * :: STEP 1
  */
-// const inspectAuthHeader = InspectorBuilder(
-//     [
-//         HRule("authorization")(
-//             (value: string) => CHECK.jwt()(value.split(" ")[1]),
-//             {error:"Invalid authorization header", required: true}
-//         )
-//     ]
-// )
+const inspector = inspectBuilder(
+    header("authorization")
+        .exists().withMessage("authorization token is required")
+)
 
 /**
  * :: STEP 2
@@ -23,13 +19,14 @@ import {TokenMan} from "../tokenMan";
 const parsePayload: Handler = (req, res, next) => {
     const {r} = res;
 
-    const token = req.headers["authorization"]!.split(" ")[1];
+    const [_, token] = req.headers["authorization"]!.split(" ");
 
     const payload = TokenMan.verifyAccessToken(token);
+
     if (!payload) {
         r.status.UN_AUTH()
             .data({expired: true})
-            .message("Authentication token is expired")
+            .message("Authentication token is expired or invalid")
             .send();
         return;
     }
@@ -62,6 +59,6 @@ function buildUserFilter(userTypes: string[]): Handler {
  * Request Handler Chain
  */ 
 export default {
-    any: [parsePayload as EHandler],
-    admin: [parsePayload as EHandler, buildUserFilter(["Administrator"]) as EHandler]
+    any: [inspector, parsePayload as EHandler],
+    admin: [inspector, parsePayload as EHandler, buildUserFilter(["Administrator"]) as EHandler]
 }

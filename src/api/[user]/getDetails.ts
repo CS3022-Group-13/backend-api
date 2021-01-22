@@ -8,7 +8,7 @@ import {param, inspectBuilder} from "../../utils/inspect";
  * validating fields
  */
 const inspector = inspectBuilder(
-    param("userId")
+    param("userId").optional()
         .isUUID(4).withMessage("Invalid user id"),
 )
 
@@ -20,7 +20,7 @@ const getListOfUsers: Handler = async (req, res) => {
     const {r} = res;
 
     // Setup Data
-    const {userId} = req.params || req.user.userId
+    const userId = req.params.userId || req.user.userId
 
     if (req.user.userType !== model.user.type.Admin &&
         req.user.userId !== userId) {

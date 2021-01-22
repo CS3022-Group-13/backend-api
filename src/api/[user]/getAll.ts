@@ -1,14 +1,16 @@
 import {EHandler, Handler} from "../../utils/types";
 import {model} from "../../model";
+import {inspectBuilder, query} from "../../utils/inspect";
 
 
 /**
  * :: STEP 1
  * validating fields
  */
-// const inspector = inspectBuilder(
-//
-// )
+const inspector = inspectBuilder(
+    query("email").optional().isEmail().withMessage("email query is not a valid email"),
+    query("verified").optional().isBoolean().withMessage("verified query is not a valid boolean")
+)
 
 /**
  * :: STEP 2
@@ -17,11 +19,8 @@ import {model} from "../../model";
 const getListOfUsers: Handler = async (req, res) => {
     const {r} = res;
 
-    // Setup Data
-    const {email, verified} = req.query
-
     // Get all users
-    const [error, users] = await model.user.user.getUserBy_query(email as string, verified as unknown as boolean)
+    const [error, users] = await model.user.user.getUserBy_query(req.query)
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
@@ -38,4 +37,4 @@ const getListOfUsers: Handler = async (req, res) => {
 /**
  * Request Handler Chain
  */
-export default [getListOfUsers as EHandler]
+export default [inspector, getListOfUsers as EHandler]

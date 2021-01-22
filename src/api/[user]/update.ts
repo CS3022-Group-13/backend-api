@@ -1,7 +1,5 @@
 import {EHandler, Handler} from "../../utils/types";
-import {v4 as UUID} from "uuid";
 import {model} from "../../model";
-import {encrypt_password} from "../../utils/hasher";
 import {body, inspectBuilder, param} from "../../utils/inspect";
 
 /**
@@ -9,14 +7,13 @@ import {body, inspectBuilder, param} from "../../utils/inspect";
  * validating fields
  */
 const inspector = inspectBuilder(
-    param("userId").exists().withMessage("userId is required")
+    param("userId").optional()
         .isUUID(4).withMessage("Invalid user id"),
-    body('firstName').exists().withMessage("firstName is required"),
-    body('lastName').exists().withMessage("lastName is required"),
-    body('email').exists().withMessage("email is required"),
-    body('telephone').exists().withMessage("telephone is required"),
-    // body('userType').exists().withMessage("userType is required")
-)
+    body("firstName").exists().withMessage("firstName is required"),
+    body("lastName").exists().withMessage("lastName is required"),
+    body("email").isEmail().withMessage("email is required"),
+    body("telephone").isMobilePhone("any").withMessage("telephone is required")
+);
 
 /**
  * :: STEP 2
@@ -27,14 +24,20 @@ const updateUserDetails: Handler = async (req, res) => {
     const {r} = res;
 
     // Setup Data
-    const userId = req.params.userId
+    const userId = req.params.userId || req.user.userId;
     const userData = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        telephone: req.body.telephone,
-        // userType: req.body.userType
+        telephone: req.body.telephone
     };
+
+    if (req.user.userId !== userId) {
+        r.status.UN_AUTH()
+            .message("Only owner can change details")
+            .send();
+        return;
+    }
 
     // Sync model to database
     const error = await model.user.user.updateBy_userId(userId, userData);
@@ -49,6 +52,13 @@ const updateUserDetails: Handler = async (req, res) => {
         return;
     }
 
+    if (error === model.ERR.DUPLICATE_ENTRY) {
+        r.status.BAD_REQ()
+            .message("Email is associated with another account")
+            .send();
+        return;
+    }
+
     r.prebuild.ISE().send();
 };
 
@@ -56,4 +66,4 @@ const updateUserDetails: Handler = async (req, res) => {
 /**
  * Request Handler Chain
  */
-export default [inspector, updateUserDetails as EHandler]
+export default [inspector, updateUserDetails as EHandler];

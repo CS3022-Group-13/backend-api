@@ -15,7 +15,9 @@ const inspector = inspectBuilder(
     body('lastName').exists().withMessage("lastName is required"),
     body('email').exists().withMessage("email is required"),
     body('telephone').exists().withMessage("telephone is required"),
-    body('userType').exists().withMessage("userType is required"),
+    body('userType').exists().withMessage("userType is required")
+        .custom((value) => Object.values(model.user.type).includes(value))
+        .withMessage("Invalid user type")
 )
 
 /**

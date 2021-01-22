@@ -27,10 +27,10 @@ const updateUserCredentials: Handler = async (req, res) => {
 
     // Setup Data
     const userId = req.params.userId
-    const {verified} = req.body
+    const data = req.body
 
     // Update account
-    const error = await model.user.account.updateBy_userId(userId, undefined, verified)
+    const error = await model.user.account.updateBy_userId(userId, data)
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
