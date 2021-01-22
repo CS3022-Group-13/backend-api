@@ -26,10 +26,7 @@ export class ProductModel {
         )
         return [error, data[0]]
     }
-    /** 
-    @param trx
-    @param productData
-    */
+    
 
     static async createProductDataEntry(productData: Product): Promise<any> {
         const [error] = await resolver<any>(
@@ -39,7 +36,7 @@ export class ProductModel {
     }
 
     static async deleteBy_productID(productId: string): Promise<any> {
-        const error = await resolver<Product[]>(
+        const error = await resolver<any>(
             knex(this.tableName).where(productId).del(),
             {
                 singleOnly: true
