@@ -27,4 +27,28 @@ export class MaterialStockModel {
         );
         return [error, data[0]];
     }
+    
+      static async createStockDataEntry(stockData: MaterialStock): Promise<any> {
+        const [error] = await resolver<any>(
+            knex(this.tableName).insert(stockData),
+            {allowUndefined: true});
+        return error;
+    }
+    
+    static async deleteBy_stockID(stockId: string): Promise<any> {
+        const error = await resolver<any>(
+            knex(this.tableName).where({stockId}).del(),
+            {
+                allowUndefined: true
+            }
+        );
+        return error;
+    }
+
+    static async updateStockDataEntry(stockId:string, stockData: MaterialStock): Promise<any> {
+        const [error] = await resolver<any>(
+            knex(this.tableName).where({stockId}).update(stockData),
+            {allowUndefined: true});
+        return error;
+    }
 }
