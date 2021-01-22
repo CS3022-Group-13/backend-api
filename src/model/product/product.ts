@@ -31,7 +31,12 @@ export class ProductModel {
     @param productData
     */
 
-    static async trx_createProductDataEntry(trx: Transaction, productData: Product): Promise<any> {
-        return trx(this.tableName).insert(productData);
+    static async createProductDataEntry(productData: Product): Promise<any> {
+        const [error] = await resolver<any>(
+            knex(this.tableName).insert(productData),
+            {allowUndefined: true});
+        return error;
     }
 }
+
+

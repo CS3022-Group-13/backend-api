@@ -50,3 +50,5 @@ const addProductDetails: Handler = async (req, res) => {
 
     r.prebuild.ISE().send();
 };
+
+export default [inspector, addProductDetails as EHandler]
