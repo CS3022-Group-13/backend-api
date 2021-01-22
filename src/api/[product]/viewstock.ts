@@ -6,13 +6,13 @@ const inspector = inspectBuilder(
     param('stockId').isUUID().withMessage("stockId is not valid")
     
 )
-const viewProduct : Handler = async (req,res) => {
+const viewStock : Handler = async (req,res) => {
     const {r} = res;
 
     const stockId = req.params.stockId;
     
     
-    const [error,stockData] = await model.product.product.findBy_productID(stockId);
+    const [error,stockData] = await model.product.stock.findBy_stockID(stockId);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
@@ -33,7 +33,7 @@ const viewProduct : Handler = async (req,res) => {
     r.prebuild.ISE().send();
     }
 
-export default [inspector, viewProduct as EHandler];
+export default [inspector, viewStock as EHandler];
 
 
 

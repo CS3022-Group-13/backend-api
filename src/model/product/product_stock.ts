@@ -17,7 +17,7 @@ export class ProductStockModel {
 
     /**
      * Find stock record by stock ID
-     * @param stockId: UUID (string)
+     * : UUID (string)
      */
     static async findBy_stockID(stockId: string): Promise<[MError, ProductStock]> {
         const [error, data] = await resolver<ProductStock[]>(
@@ -40,7 +40,7 @@ export class ProductStockModel {
         const error = await resolver<any>(
             knex(this.tableName).where({stockId}).del(),
             {
-                singleOnly: true
+                allowUndefined: true
             }
         );
         return error;

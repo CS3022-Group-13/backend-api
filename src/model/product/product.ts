@@ -15,7 +15,7 @@ export class ProductModel {
 
     /**
      * Find finishedProduct record by product ID
-     * @param productId: UUID (string)
+     *: UUID (string)
      */
     static async findBy_productID(productId: string): Promise<any> {
         const [error, data] = await resolver<any>(
@@ -39,7 +39,7 @@ export class ProductModel {
         const error = await resolver<any>(
             knex(this.tableName).where({productId}).del(),
             {
-                singleOnly: true
+                allowUndefined: true
             }
         );
         return error;
