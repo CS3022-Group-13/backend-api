@@ -15,7 +15,7 @@ rUser.post('/login', userLogin)
 rUser.post('/register', userRegister)
 
 rUser.put('/update-details/:userId*?', auth.any, userUpdate)
-rUser.put('/update-credentials/:userId', auth.any, updateCredential)
+rUser.put('/update-credentials/:userId*?', auth.any, updateCredential)
 
 // allow query
 rUser.get('/get-users', auth.admin, getAll)
