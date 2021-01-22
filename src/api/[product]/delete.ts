@@ -1,15 +1,19 @@
 import {EHandler, Handler} from "../../utils/types";
 import { validate as uuidValidate } from 'uuid';
 import {model} from "../../model";
-import {body, inspectBuilder} from "../../utils/inspect";
+import {param, inspectBuilder} from "../../utils/inspect";
 
+const inspector = inspectBuilder(
+    param('productId').isUUID().withMessage("productId is not valid")
+    
+)
 const deleteProduct : Handler = async (req,res) => {
     const {r} = res;
 
-    const productId = req.params.id;
+    const productId = req.params.productId;
     
-    if (uuidValidate(productId)) {
-        const error = await model.product.product.deleteBy_productID(productId);
+    
+    const error = await model.product.product.deleteBy_productID(productId);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
@@ -22,18 +26,15 @@ const deleteProduct : Handler = async (req,res) => {
     }
 
     if (error === model.ERR.NOT_FOUND) {
-        r.status.BAD_REQ()
+        r.status.NOT_FOUND()
             .message("Product ID is not found")
             .send()
         return;
     }
-
-    
+    r.prebuild.ISE().send();
     }
 
-    r.prebuild.ISE().send();
-}
-export default [deleteProduct as EHandler];
+export default [inspector, deleteProduct as EHandler];
 
 
 
