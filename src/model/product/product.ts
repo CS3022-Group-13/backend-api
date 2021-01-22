@@ -1,5 +1,6 @@
 import {MError} from "../merror";
 import {knex, resolver} from "../index";
+import {Transaction} from "knex";
 
 export interface Product {
     productId: string;
@@ -24,5 +25,13 @@ export class ProductModel {
             }
         )
         return [error, data[0]]
+    }
+    /** 
+    @param trx
+    @param productData
+    */
+
+    static async trx_createProductDataEntry(trx: Transaction, productData: Product): Promise<any> {
+        return trx(this.tableName).insert(productData);
     }
 }
