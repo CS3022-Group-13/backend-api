@@ -3,8 +3,8 @@ import {model} from "../../model";
 import {query, inspectBuilder} from "../../utils/inspect";
 
 const inspector = inspectBuilder(
-    query('productId').isUUID().withMessage("productId is not valid"),
-    query('productName').isString().withMessage("productName is not valid")
+    query('productId').optional().isUUID().withMessage("productId is not valid"),
+    query('productName').optional().isString().withMessage("productName is not valid")
     
 )
 const viewProduct : Handler = async (req,res) => {
