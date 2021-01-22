@@ -17,14 +17,20 @@ export class ProductModel {
      * Find finishedProduct record by product ID
      *: UUID (string)
      */
-    static async findBy_productID(productId: string): Promise<any> {
+    static async findBy_productID(query: any): Promise<[MError,Product[]]> {
+
+        const fields = ["productId", "productName"]
+
+        Object.keys(query).forEach((k) => {
+            if (fields.includes(k))
+                (query[k] === null || query[k] === undefined) && delete query[k];
+            else
+                delete query[k];
+        });
         const [error, data] = await resolver<any>(
-            knex(this.tableName).where({productId}),
-            {
-                singleOnly: true
-            }
+            knex(this.tableName).where(query)
         )
-        return [error, data[0]]
+        return [error, data]
     }
     
 

@@ -23,13 +23,13 @@ const rProduct = Router();
 rProduct.get('/')
 rProduct.post('/register',registerProduct)
 rProduct.delete('/delete/:productId',deleteProduct)
-rProduct.get('/view/:productId',viewProduct)
+rProduct.get('/view',viewProduct)
 rProduct.put('/update/:productId',updateProduct)
 
 rProduct.post('/registerstock',registerStock)
-rProduct.post('/deletestock/:stockId',deleteStock)
-rProduct.post('/viewstock/:stockId',viewStock)
-rProduct.post('/updatestock/:stockId',updateStock)
+rProduct.delete('/deletestock/:stockId',deleteStock)
+rProduct.get('/viewstock/:stockId',viewStock)
+rProduct.put('/updatestock/:stockId',updateStock)
 
 
 export default rProduct

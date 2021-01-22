@@ -1,18 +1,16 @@
 import {EHandler, Handler} from "../../utils/types";
 import {model} from "../../model";
-import {param, inspectBuilder} from "../../utils/inspect";
+import {query, inspectBuilder} from "../../utils/inspect";
 
 const inspector = inspectBuilder(
-    param('productId').isUUID().withMessage("productId is not valid")
+    query('productId').isUUID().withMessage("productId is not valid"),
+    query('productName').isString().withMessage("productName is not valid")
     
 )
 const viewProduct : Handler = async (req,res) => {
     const {r} = res;
-
-    const productId = req.params.productId;
     
-    
-    const [error,product] = await model.product.product.findBy_productID(productId);
+    const [error,product] = await model.product.product.findBy_productID(query);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
@@ -24,12 +22,6 @@ const viewProduct : Handler = async (req,res) => {
         return;
     }
 
-    if (error === model.ERR.NOT_FOUND) {
-        r.status.NOT_FOUND()
-            .message("Product ID is not found")
-            .send()
-        return;
-    }
     r.prebuild.ISE().send();
     }
 

@@ -37,7 +37,7 @@ export class ProductStockModel {
     }
     
     static async deleteBy_stockID(stockId: string): Promise<any> {
-        const error = await resolver<any>(
+        const [error] = await resolver<any>(
             knex(this.tableName).where({stockId}).del(),
             {
                 allowUndefined: true
