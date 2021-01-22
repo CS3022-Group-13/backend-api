@@ -6,7 +6,6 @@ import {Transaction} from "knex";
 export interface ProductStock {
     stockId: string;
     productId: string;
-    productName: string;
     quantity: number;
     unitPrice: number;
     date:any;
@@ -39,7 +38,7 @@ export class ProductStockModel {
     
     static async deleteBy_stockID(stockId: string): Promise<any> {
         const error = await resolver<any>(
-            knex(this.tableName).where(stockId).del(),
+            knex(this.tableName).where({stockId}).del(),
             {
                 singleOnly: true
             }
@@ -49,7 +48,7 @@ export class ProductStockModel {
 
     static async updateStockDataEntry(stockId:string, stockData: ProductStock): Promise<any> {
         const [error] = await resolver<any>(
-            knex(this.tableName).where(stockId).update(stockData),
+            knex(this.tableName).where({stockId}).update(stockData),
             {allowUndefined: true});
         return error;
     }

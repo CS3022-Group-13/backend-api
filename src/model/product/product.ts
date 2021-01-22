@@ -17,9 +17,9 @@ export class ProductModel {
      * Find finishedProduct record by product ID
      * @param productId: UUID (string)
      */
-    static async findBy_productID(productId: string): Promise<[MError, Product]> {
-        const [error, data] = await resolver<Product[]>(
-            knex(this.tableName).where(productId),
+    static async findBy_productID(productId: string): Promise<any> {
+        const [error, data] = await resolver<any>(
+            knex(this.tableName).where({productId}),
             {
                 singleOnly: true
             }
@@ -37,7 +37,7 @@ export class ProductModel {
 
     static async deleteBy_productID(productId: string): Promise<any> {
         const error = await resolver<any>(
-            knex(this.tableName).where(productId).del(),
+            knex(this.tableName).where({productId}).del(),
             {
                 singleOnly: true
             }
@@ -47,7 +47,7 @@ export class ProductModel {
 
     static async updateProductDataEntry(productId:string, productData: Product): Promise<any> {
         const [error] = await resolver<any>(
-            knex(this.tableName).where(productId).update(productData),
+            knex(this.tableName).where({productId}).update(productData),
             {allowUndefined: true});
         return error;
     }

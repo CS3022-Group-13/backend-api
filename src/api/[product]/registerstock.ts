@@ -9,10 +9,9 @@ import {body, inspectBuilder} from "../../utils/inspect";
  */
 const inspector = inspectBuilder(
     body('productId').isUUID().withMessage("productId is not valid"),
-    body('productName').exists().withMessage("productname is required"),
     body('quantity').exists().withMessage("quantity is required"),
     body('unitPrice').exists().withMessage("unitprice is required"),
-    body('date').isDate().withMessage("date is not valid")
+    body('date').exists().withMessage("date is not valid")
     
 )
 
@@ -24,7 +23,6 @@ const addStockDetails: Handler = async (req, res) => {
     const stockData = {
         stockId,
         productId : req.body.productId,
-        productName: req.body.productName,
         quantity: req.body.quantity,
         unitPrice: req.body.unitPrice,
         date : req.body.date
