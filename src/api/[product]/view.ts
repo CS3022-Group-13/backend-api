@@ -6,19 +6,19 @@ const inspector = inspectBuilder(
     param('productId').isUUID().withMessage("productId is not valid")
     
 )
-const deleteProduct : Handler = async (req,res) => {
+const viewProduct : Handler = async (req,res) => {
     const {r} = res;
 
     const productId = req.params.productId;
     
     
-    const error = await model.product.product.deleteBy_productID(productId);
+    const [error,product] = await model.product.product.findBy_productID(productId);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
-            .message(`succesfully deleted the product ${productId}`)
+            .message(`success`)
             .data({
-                productId,
+                product,
             })
             .send();
         return;
@@ -33,7 +33,7 @@ const deleteProduct : Handler = async (req,res) => {
     r.prebuild.ISE().send();
     }
 
-export default [inspector, deleteProduct as EHandler];
+export default [inspector, viewProduct as EHandler];
 
 
 

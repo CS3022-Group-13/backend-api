@@ -1,6 +1,6 @@
 import {MError} from "../merror";
 import {knex, resolver} from "../index";
-import {Transaction} from "knex";
+
 
 export interface Product {
     productId: string;
@@ -15,11 +15,11 @@ export class ProductModel {
 
     /**
      * Find finishedProduct record by product ID
-     * @param productID: UUID (string)
+     * @param productId: UUID (string)
      */
-    static async findBy_productID(productID: string): Promise<[MError, Product]> {
+    static async findBy_productID(productId: string): Promise<[MError, Product]> {
         const [error, data] = await resolver<Product[]>(
-            knex(this.tableName).where({productID}),
+            knex(this.tableName).where(productId),
             {
                 singleOnly: true
             }
@@ -38,13 +38,20 @@ export class ProductModel {
         return error;
     }
 
-    static async deleteBy_productID(productID: string): Promise<any> {
+    static async deleteBy_productID(productId: string): Promise<any> {
         const error = await resolver<Product[]>(
-            knex(this.tableName).where({productID}).del(),
+            knex(this.tableName).where(productId).del(),
             {
                 singleOnly: true
             }
         );
+        return error;
+    }
+
+    static async updateProductDataEntry(productId:string, productData: Product): Promise<any> {
+        const [error] = await resolver<any>(
+            knex(this.tableName).where(productId).update(productData),
+            {allowUndefined: true});
         return error;
     }
 
