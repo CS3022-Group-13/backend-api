@@ -9,6 +9,6 @@ const rOrder = Router();
 
 rOrder.post('/place-order', auth.cus, placeOrder);
 rOrder.get('/view-orders', auth.cus_sMan, viewOrder);
-rOrder.put('/update-status', auth.sMan, change);
+rOrder.put('/update-status/:orderId', auth.sMan, change);
 
 export default rOrder
