@@ -32,6 +32,13 @@ const validateCredentials: Handler = async (req, res, next) => {
             return;
         }
 
+        if (account.verified === false) {
+            r.status.UN_AUTH()
+                .message("Your account is disabled.")
+                .send();
+            return;
+        }
+
         req.body.userId = account.userId; // bind userId to request
         next() // send pair of tokens
         return;
@@ -39,7 +46,7 @@ const validateCredentials: Handler = async (req, res, next) => {
 
     if (error === model.ERR.NOT_FOUND) {
         r.status.NOT_FOUND()
-            .message("User_data doesn't exists")
+            .message("User Data doesn't exists")
             .send();
         return;
     }
