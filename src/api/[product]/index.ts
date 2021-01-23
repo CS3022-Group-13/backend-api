@@ -14,7 +14,7 @@ import updateProduct from "./update";
 
 rProduct.post("/register", auth.iMan, registerProduct);
 rProduct.delete("/delete/:productId", auth.iMan, deleteProduct);
-rProduct.get("/view", auth.iMan, viewProduct);
+rProduct.get("/view", auth.cus_iMan, viewProduct);
 rProduct.put("/update/:productId", auth.iMan, updateProduct);
 
 
@@ -29,7 +29,7 @@ import updateStock from "./stock/update";
 
 rProduct.post("/stock/register", auth.iMan, registerStock);
 rProduct.delete("/stock/delete/:stockId", auth.iMan, deleteStock);
-rProduct.get("/stock/view", auth.iMan, viewStock);
+rProduct.get("/stock/view", auth.cus_iMan, viewStock);
 rProduct.put("/stock/update/:stockId", auth.iMan, updateStock);
 
 

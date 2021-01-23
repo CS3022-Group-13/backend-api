@@ -65,4 +65,5 @@ export default {
     iMan: [inspector, parsePayload as EHandler, buildUserFilter(["Inventory Manager"]) as EHandler],
     cus: [inspector, parsePayload as EHandler, buildUserFilter(["Customer"]) as EHandler],
     cus_sMan: [inspector, parsePayload as EHandler, buildUserFilter(["Customer", "Sales Manager"]) as EHandler],
+    cus_iMan: [inspector, parsePayload as EHandler, buildUserFilter(["Customer", "Inventory Manager"]) as EHandler],
 }
