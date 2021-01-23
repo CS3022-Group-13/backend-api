@@ -69,7 +69,7 @@ const ServeTokenPair: Handler = async (req, res) => {
     }
 
     // create token
-    const accessToken = TokenMan.getAccessToken(customerData);
+    const accessToken = TokenMan.getAccessToken({...customerData, userType: "Customer"});
 
     r.status.OK()
         .data({

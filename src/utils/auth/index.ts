@@ -60,5 +60,8 @@ function buildUserFilter(userTypes: string[]): Handler {
  */ 
 export default {
     any: [inspector, parsePayload as EHandler],
-    admin: [inspector, parsePayload as EHandler, buildUserFilter(["Administrator"]) as EHandler]
+    admin: [inspector, parsePayload as EHandler, buildUserFilter(["Administrator"]) as EHandler],
+    sMan: [inspector, parsePayload as EHandler, buildUserFilter(["Sales Manager"]) as EHandler],
+    iMan: [inspector, parsePayload as EHandler, buildUserFilter(["Inventory Manager"]) as EHandler],
+    cus: [inspector, parsePayload as EHandler, buildUserFilter(["Customer"]) as EHandler],
 }
