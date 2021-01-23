@@ -1,5 +1,6 @@
 import {MError} from "../merror";
 import {knex, resolver} from "../index";
+import { Transaction } from "knex";
 
 export interface Invoice {
     invoiceId: string
@@ -20,5 +21,9 @@ export class InvoiceModel {
             }
         )
         return [error, data[0]]
+    }
+
+    static async trx_createInvoiceDataEntry(trx: Transaction, invoiceData: Invoice): Promise<any> {
+        return trx(this.tableName).insert(invoiceData);
     }
 }

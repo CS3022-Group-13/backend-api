@@ -1,5 +1,6 @@
 import {MError} from "../merror";
 import {knex, resolver} from "../index";
+import { Transaction } from "knex";
 
 export interface Product {
     productId: string;
@@ -24,5 +25,18 @@ export class ProductModel {
             }
         )
         return [error, data[0]]
+    }
+
+
+    /**
+     * reduce quantity of a product
+     * @param trx : knex transaction object
+     * @param product: Product
+     * @param amount: number
+     */
+    static async reduceProductQuantity(trx: Transaction, product: Product, amount: number): Promise<any> {
+        return trx(this.tableName)
+                .where({productId: product.productId})
+                .update({quantity: product.quantity - amount});
     }
 }
