@@ -32,6 +32,13 @@ const validateCredentials: Handler = async (req, res, next) => {
             return;
         }
 
+        if (!account.status) {
+            r.status.UN_AUTH()
+                .message("Your account is disabled")
+                .send();
+            return;
+        }
+
         req.body.customerId = account.customerId; // bind customerId to request
         next(); // send pair of tokens
         return;

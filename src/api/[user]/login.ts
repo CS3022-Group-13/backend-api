@@ -32,7 +32,7 @@ const validateCredentials: Handler = async (req, res, next) => {
             return;
         }
 
-        if (account.verified === false) {
+        if (!account.verified) {
             r.status.UN_AUTH()
                 .message("Your account is disabled.")
                 .send();
