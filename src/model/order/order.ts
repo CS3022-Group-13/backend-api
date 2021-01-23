@@ -2,6 +2,7 @@ import {MError} from "../merror";
 import {knex, resolver} from "../index";
 import { OrderItem, OrderItemModel } from './order_item';
 import { Invoice, InvoiceModel } from './invoice';
+import {UserData} from "../user/user_data";
 
 
 export interface Order {
@@ -25,6 +26,30 @@ export class OrderModel {
         return [error, data[0]]
     }
 
+    static async getOrderBy_query(query: any): Promise<[MError, Order[]]> {
+
+        // Cleaning Query
+        const fields = ["orderId", "customerId", "orderStatus", "orderDate"]
+        Object.keys(query).forEach((k) => {
+            if (fields.includes(k))
+                (query[k] === null || query[k] === undefined) && delete query[k];
+            else
+                delete query[k];
+        });
+
+        const [error, data] = await resolver<Order[]>(
+            knex(this.tableName).where(query)
+        )
+        return [error, data]
+    }
+
+    static async updateBy_orderId(orderId: string, orderStatus: string): Promise<MError> {
+        const [error] = await resolver(
+            knex(this.tableName).update({orderStatus}).where({orderId}),
+            { allowUndefined: true }
+        )
+        return error
+    }
 
     static async createOrderDataEntry(orderData: Order, orderItemsData: Array<OrderItem>, invoiceData: Invoice ): Promise<MError> {
         const [error] = await resolver<any>(
