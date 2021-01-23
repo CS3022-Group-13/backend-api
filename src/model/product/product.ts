@@ -28,15 +28,5 @@ export class ProductModel {
     }
 
 
-    /**
-     * reduce quantity of a product
-     * @param trx : knex transaction object
-     * @param product: Product
-     * @param amount: number
-     */
-    static async reduceProductQuantity(trx: Transaction, product: Product, amount: number): Promise<any> {
-        return trx(this.tableName)
-                .where({productId: product.productId})
-                .update({quantity: product.quantity - amount});
-    }
+    
 }
