@@ -1,7 +1,7 @@
 import {Router} from "express";
 import auth from '../../utils/auth'
 
-import userLogin from "./login"
+import userLogin     from "./login"
 import userRegister from "./register";
 import userUpdate from "./update"
 import updateCredential from "./credential"

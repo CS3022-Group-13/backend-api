@@ -2,6 +2,7 @@ import {MError} from "../merror";
 import {knex, resolver} from "../index";
 import { Transaction } from "knex";
 
+
 export interface Product {
     productId: string;
     productName: string;
@@ -15,18 +16,48 @@ export class ProductModel {
 
     /**
      * Find finishedProduct record by product ID
-     * @param productID: UUID (string)
+     *: UUID (string)
      */
-    static async findBy_productID(productID: string): Promise<[MError, Product]> {
-        const [error, data] = await resolver<Product[]>(
-            knex(this.tableName).where({productID}),
-            {
-                singleOnly: true
-            }
+    static async findBy_query(query: any): Promise<[MError,Product[]]> {
+
+        const fields = ["productId", "productName"]
+        Object.keys(query).forEach((k) => {
+            if (fields.includes(k))
+                (query[k] === null || query[k] === undefined) && delete query[k];
+            else
+                delete query[k];
+        });
+
+        const [error, data] = await resolver<any>(
+            knex(this.tableName).where(query)
         )
-        return [error, data[0]]
+        return [error, data]
+    }
+    
+
+    static async createProductDataEntry(productData: Product): Promise<any> {
+        const [error] = await resolver<any>(
+            knex(this.tableName).insert(productData),
+            {allowUndefined: true});
+        return error;
     }
 
+    static async deleteBy_productID(productId: string): Promise<any> {
+        const [error] = await resolver<any>(
+            knex(this.tableName).where({productId}).del(),
+            {
+                allowUndefined: true
+            }
+        );
+        return error;
+    }
+
+    static async updateProductDataEntry(productId:string, productData: any): Promise<any> {
+        const [error] = await resolver<any>(
+            knex(this.tableName).where({productId}).update(productData),
+            {allowUndefined: true});
+        return error;
+    }
 
     /**
      * reduce quantity of a product
