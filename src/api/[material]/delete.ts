@@ -4,16 +4,16 @@ import {param, inspectBuilder} from "../../utils/inspect";
 
 
 const inspector = inspectBuilder(
-    param("productId").isUUID().withMessage("productId is not valid")
+    param("materialId").isUUID().withMessage("materialId is not valid")
 );
 
 
-const deleteProduct: Handler = async (req, res) => {
+const deleteMaterial: Handler = async (req, res) => {
     const {r} = res;
 
-    const productId = req.params.productId;
+    const materialId = req.params.materialId;
 
-    const error = await model.product.product.deleteBy_productID(productId);
+    const error = await model.material.material.deleteBy_materialId(materialId);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
@@ -25,7 +25,7 @@ const deleteProduct: Handler = async (req, res) => {
     r.prebuild.ISE().send();
 };
 
-export default [inspector, deleteProduct as EHandler];
+export default [inspector, deleteMaterial as EHandler];
 
 
 

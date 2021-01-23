@@ -45,14 +45,14 @@ export class ProductModel {
     }
     
 
-    static async createProductDataEntry(productData: Product): Promise<any> {
+    static async addProduct(productData: Product): Promise<MError> {
         const [error] = await resolver<any>(
             knex(this.tableName).insert(productData),
             {allowUndefined: true});
         return error;
     }
 
-    static async deleteBy_productID(productId: string): Promise<any> {
+    static async deleteBy_productID(productId: string): Promise<MError> {
         const [error] = await resolver<any>(
             knex.transaction(async (trx): Promise<any> => {
                 await trx("productStock").where({productId}).del()
@@ -62,7 +62,7 @@ export class ProductModel {
         return error;
     }
 
-    static async updateProductDataEntry(productId:string, productData: any): Promise<any> {
+    static async updateBy_productId(productId:string, productData: any): Promise<MError> {
         const [error] = await resolver<any>(
             knex(this.tableName).where({productId}).update(productData),
             {allowUndefined: true});
@@ -75,7 +75,7 @@ export class ProductModel {
      * @param product: Product
      * @param amount: number
      */
-    static async reduceProductQuantity(trx: Transaction, product: Product, amount: number): Promise<any> {
+    static async reduceProductQuantity(trx: Transaction, product: Product, amount: number): Promise<MError> {
         return trx(this.tableName)
                 .where({productId: product.productId})
                 .update({quantity: product.quantity - amount});

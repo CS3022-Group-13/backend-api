@@ -15,7 +15,7 @@ import rUser from "./[user]"
 import rCustomer from "./[customer]";
 import rOrder from "./[order]";
 import rProduct from "./[product]";
-import rMaterial from "./[material]";
+import rMaterial from "./[material]"
 import rPayment from "./[payment]";
 
 rApi.use("/user", rUser)

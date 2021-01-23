@@ -8,32 +8,32 @@ import {body, inspectBuilder} from "../../utils/inspect";
  * validating fields
  */
 const inspector = inspectBuilder(
-    body('productName').exists().withMessage("productName is required"),
+    body('materialName').exists().withMessage("materialName is required"),
     body('quantity').exists().withMessage("quantity is required"),
     body('unitPrice').exists().withMessage("unitPrice is required")
 )
 
-const addProductDetails: Handler = async (req, res) => {
+const addMaterialDetails: Handler = async (req, res) => {
     const {r} = res;
 
     // Setup Data
-    const productId = UUID()
-    const productData = {
-        productId,
-        productName: req.body.productName,
+    const materialId = UUID()
+    const materialData = {
+        materialId,
+        materialName: req.body.materialName,
         quantity: req.body.quantity,
         unitPrice: req.body.unitPrice,
         
     };
 
      // Sync model to database
-     const error = await model.product.product.addProduct(productData);
+     const error = await model.material.material.addMaterial(materialData);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
             .message("Success")
             .data(
-                productId
+                materialId
             )
             .send();
         return;
@@ -42,4 +42,4 @@ const addProductDetails: Handler = async (req, res) => {
     r.prebuild.ISE().send();
 };
 
-export default [inspector, addProductDetails as EHandler]
+export default [inspector, addMaterialDetails as EHandler]

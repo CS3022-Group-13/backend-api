@@ -12,7 +12,7 @@ const deleteStock: Handler = async (req, res) => {
 
     const stockId = req.params.stockId;
 
-    const error = await model.product.stock.deleteBy_stockId(stockId);
+    const error = await model.material.stock.deleteBy_stockId(stockId);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()

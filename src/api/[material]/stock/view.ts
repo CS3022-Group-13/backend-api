@@ -4,7 +4,7 @@ import {inspectBuilder, query} from "../../../utils/inspect";
 
 const inspector = inspectBuilder(
     query("stockId").optional().isUUID().withMessage("stockId is not valid"),
-    query("productId").optional().isUUID().withMessage("productId is not valid")
+    query("materialId").optional().isUUID().withMessage("materialId is not valid")
 );
 
 
@@ -13,7 +13,7 @@ const view: Handler = async (req, res) => {
 
     const query = req.query
 
-    const [error, stocks] = await model.product.stock.findBy_query(query);
+    const [error, stocks] = await model.material.stock.findBy_query(query);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()

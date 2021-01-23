@@ -1,5 +1,4 @@
 import {EHandler, Handler} from "../../../utils/types";
-import {v4 as UUID} from "uuid";
 import {model} from "../../../model";
 import {body, inspectBuilder, param} from "../../../utils/inspect";
 
@@ -31,7 +30,7 @@ const updateStockDetails: Handler = async (req, res) => {
     };
 
      // Sync model to database
-     const error = await model.product.stock.updateBy_stockId(stockId, stockData);
+     const error = await model.material.stock.updateBy_stockId(stockId, stockData);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()

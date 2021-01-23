@@ -26,25 +26,12 @@ const updateProductDetails: Handler = async (req, res) => {
     };
 
      // Sync model to database
-     const error = await model.product.product.updateProductDataEntry(productId, productData);
+     const error = await model.product.product.updateBy_productId(productId, productData);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
-            .message(`Successfully updated the product ${productId}`)
-            .data({
-                productId,
-                productName: req.body.productName,
-                quantity : req.body.quantity,
-                unitPrice : req.body.unitPrice
-            })
+            .message(`Success`)
             .send();
-        return;
-    }
-
-    if (error === model.ERR.NOT_FOUND) {
-        r.status.NOT_FOUND()
-            .message("Product ID is not found")
-            .send()
         return;
     }
 
