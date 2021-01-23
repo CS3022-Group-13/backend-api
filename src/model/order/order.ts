@@ -34,7 +34,7 @@ export class OrderModel {
                     await InvoiceModel.trx_createInvoiceDataEntry(trx, invoiceData);
 
                     for(let item of orderItemsData){
-                        const [error, product] = await ProductModel.findBy_productID(item.productId);
+                        const [error, product] = await ProductModel.findBy_productId(item.productId);
                         await ProductModel.reduceProductQuantity(trx, product, item.quantity);      
                     }
                 }

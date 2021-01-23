@@ -8,9 +8,9 @@ import {body, inspectBuilder, param} from "../../../utils/inspect";
  * validating fields
  */
 const inspector = inspectBuilder(
-    param('stockID').isUUID().withMessage("stockId is not valid"),
-    body('productId').isUUID().withMessage("productId is not valid"),
-    body('productName').exists().withMessage("productName is required"),
+    param('stockId').isUUID().withMessage("stockId is not valid"),
+    // body('productId').isUUID().withMessage("productId is not valid"),
+    // body('productName').exists().withMessage("productName is required"),
     body('quantity').exists().withMessage("quantity is required"),
     body('unitPrice').exists().withMessage("unitPrice is required"),
     body('date').isDate().withMessage("date is not valid")
@@ -21,10 +21,10 @@ const updateStockDetails: Handler = async (req, res) => {
     const {r} = res;
 
     // Setup Data
-    const stockId = req.params.productId;
+    const stockId = req.params.stockId;
     const stockData = {
-        productId : req.body.productId,
-        productName: req.body.productName,
+        // productId : req.body.productId,
+        // productName: req.body.productName,
         quantity: req.body.quantity,
         unitPrice: req.body.unitPrice,
         date : req.body.date
