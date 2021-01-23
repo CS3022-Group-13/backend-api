@@ -7,7 +7,8 @@ const user_types = [
 
 const order_states = [
     "Placed",
-    "Paid"
+    "Paid",
+    "Delivered"
 ]
 
 exports.seed = async function (knex) {

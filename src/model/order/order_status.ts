@@ -1,4 +1,5 @@
 export const OrderStatus = {
     PLACED: "Placed",
-    PAID: "Paid"
+    PAID: "Paid",
+    DIVER: "Delivered"
 }
