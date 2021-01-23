@@ -1,13 +1,14 @@
 import {Router} from "express";
 import auth from '../../utils/auth'
 
-import userLogin     from "./login"
+import userLogin from "./login"
 import userRegister from "./register";
 import userUpdate from "./update"
 import updateCredential from "./credential"
 import getAll from "./getAll";
 import getDetails from "./getDetails";
 import verify from "./verify";
+import resetPass from "./resetPass";
 
 const rUser = Router();
 
@@ -22,5 +23,6 @@ rUser.get('/get-users', auth.admin, getAll)
 rUser.get('/get-details/:userId*?', auth.any, getDetails)
 
 rUser.put('/change-status/:userId', auth.admin, verify)
+rUser.put('/reset-pass/:userId', auth.admin, resetPass)
 
 export default rUser
