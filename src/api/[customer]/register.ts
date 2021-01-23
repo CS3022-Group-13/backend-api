@@ -52,7 +52,7 @@ const addCustomerDetails:Handler = async (req, res) => {
     };
 
     // Sync model to database
-    const error = await model.customer.account.createAccount_local(
+    const error = await model.customer.account.createAccount(
         customerData,
         {
             customerId,
@@ -61,9 +61,6 @@ const addCustomerDetails:Handler = async (req, res) => {
             status: true
         }
     );
-
-    
-
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()

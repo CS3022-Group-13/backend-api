@@ -1,6 +1,7 @@
 import {MError} from "../merror";
 import {knex, resolver} from "../index";
 import {Transaction} from "knex";
+import {UserData} from "../user/user_data";
 
 export interface Customer{
     customerId: string;
@@ -26,6 +27,35 @@ export class CustomerModel {
             }
         )
         return [error, data[0]]
+    }
+
+    static async getCustomerBy_query(query: any): Promise<[MError, UserData]> {
+        // Cleaning Query
+        const fields = ["customerId", "email", "status"]
+        Object.keys(query).forEach((k) => {
+            if (fields.includes(k))
+                (query[k] === null || query[k] === undefined) && delete query[k];
+            else
+                delete query[k];
+        });
+
+        const [error, data] = await resolver(
+            knex(this.tableName).join("customerAccount",
+                "customer.customerId", "=", "customerAccount.customerId"
+            ).select(
+                "customer.*",
+                "customerAccount.status"
+            ).where(query)
+        )
+        return [error, data as UserData]
+    }
+
+    static async updateBy_customerId(customerId: string, customerData: any): Promise<MError> {
+        const [error] = await resolver(
+            knex(this.tableName).update(customerData).where({customerId}),
+            {allowUndefined: true}
+        )
+        return error
     }
 
     /**
