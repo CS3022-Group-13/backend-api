@@ -35,15 +35,7 @@ const updateStockDetails: Handler = async (req, res) => {
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
-            .message(`Successfully updated the stock: ${stockId}`)
-            .data({
-                stockId,
-                productId : req.body.productId,
-                productName: req.body.productName,
-                quantity: req.body.quantity,
-                unitPrice: req.body.unitPrice,
-                date : req.body.date
-            })
+            .message(`Updated`)
             .send();
         return;
     }

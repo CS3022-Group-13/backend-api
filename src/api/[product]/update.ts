@@ -23,7 +23,6 @@ const updateProductDetails: Handler = async (req, res) => {
         productName: req.body.productName,
         quantity: req.body.quantity,
         unitPrice: req.body.unitPrice,
-        
     };
 
      // Sync model to database
