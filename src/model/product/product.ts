@@ -18,6 +18,16 @@ export class ProductModel {
      * Find finishedProduct record by product ID
      *: UUID (string)
      */
+    static async findBy_productID(productId: string): Promise<[MError, Product]> {
+        const [error, data] = await resolver<any>(
+            knex(this.tableName).where({productId}),
+            {
+                singleOnly: true
+            }
+        )
+        return [error, data]
+    }
+
     static async findBy_query(query: any): Promise<[MError,Product[]]> {
 
         const fields = ["productId", "productName"]

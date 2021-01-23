@@ -19,7 +19,7 @@ export class ProductStockModel {
      * Find stock record by stock ID
      * : UUID (string)
      */
-    static async findBy_query(query: string): Promise<[MError, ProductStock]> {
+    static async findBy_query(query: any): Promise<[MError, ProductStock]> {
         const fields = ["productId", "stockId"]
         Object.keys(query).forEach((k) => {
             if (fields.includes(k))
