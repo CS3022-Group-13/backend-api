@@ -1,7 +1,7 @@
-import {EHandler, Handler} from "../../utils/types";
+import {EHandler, Handler} from "../../../utils/types";
 import {v4 as UUID} from "uuid";
-import {model} from "../../model";
-import {body, inspectBuilder} from "../../utils/inspect";
+import {model} from "../../../model";
+import {body, inspectBuilder} from "../../../utils/inspect";
 
 /**
  * :: STEP 1
@@ -10,9 +10,8 @@ import {body, inspectBuilder} from "../../utils/inspect";
 const inspector = inspectBuilder(
     body('productId').isUUID().withMessage("productId is not valid"),
     body('quantity').exists().withMessage("quantity is required"),
-    body('unitPrice').exists().withMessage("unitprice is required"),
+    body('unitPrice').exists().withMessage("unitPrice is required"),
     body('date').exists().withMessage("date is not valid")
-    
 )
 
 const addStockDetails: Handler = async (req, res) => {
@@ -39,13 +38,6 @@ const addStockDetails: Handler = async (req, res) => {
                 stockId,
             })
             .send();
-        return;
-    }
-
-    if (error === model.ERR.DUPLICATE_ENTRY) {
-        r.status.BAD_REQ()
-            .message("stock ID is already taken")
-            .send()
         return;
     }
 

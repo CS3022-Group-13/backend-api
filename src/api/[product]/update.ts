@@ -9,10 +9,9 @@ import {body, inspectBuilder, param} from "../../utils/inspect";
  */
 const inspector = inspectBuilder(
     param('productId').isUUID().withMessage("productId is not valid"),
-    body('productName').exists().withMessage("productname is required"),
+    body('productName').exists().withMessage("productName is required"),
     body('quantity').exists().withMessage("quantity is required"),
-    body('unitPrice').exists().withMessage("unitprice is required"),
-    
+    body('unitPrice').exists().withMessage("unitPrice is required")
 )
 
 const updateProductDetails: Handler = async (req, res) => {
@@ -21,7 +20,6 @@ const updateProductDetails: Handler = async (req, res) => {
     // Setup Data
     const productId = req.params.productId;
     const productData = {
-        productId,
         productName: req.body.productName,
         quantity: req.body.quantity,
         unitPrice: req.body.unitPrice,
@@ -29,11 +27,11 @@ const updateProductDetails: Handler = async (req, res) => {
     };
 
      // Sync model to database
-     const error = await model.product.product.updateProductDataEntry(productId,productData);
+     const error = await model.product.product.updateProductDataEntry(productId, productData);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
-            .message(`sucessfully updated the product ${productId}`)
+            .message(`Successfully updated the product ${productId}`)
             .data({
                 productId,
                 productName: req.body.productName,

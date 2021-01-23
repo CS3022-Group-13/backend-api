@@ -8,10 +8,9 @@ import {body, inspectBuilder} from "../../utils/inspect";
  * validating fields
  */
 const inspector = inspectBuilder(
-    body('productName').exists().withMessage("productname is required"),
+    body('productName').exists().withMessage("productName is required"),
     body('quantity').exists().withMessage("quantity is required"),
-    body('unitPrice').exists().withMessage("unitprice is required"),
-    
+    body('unitPrice').exists().withMessage("unitPrice is required")
 )
 
 const addProductDetails: Handler = async (req, res) => {

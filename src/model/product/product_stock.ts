@@ -19,12 +19,17 @@ export class ProductStockModel {
      * Find stock record by stock ID
      * : UUID (string)
      */
-    static async findBy_stockID(stockId: string): Promise<[MError, ProductStock]> {
+    static async findBy_query(query: string): Promise<[MError, ProductStock]> {
+        const fields = ["productId", "stockId"]
+        Object.keys(query).forEach((k) => {
+            if (fields.includes(k))
+                (query[k] === null || query[k] === undefined) && delete query[k];
+            else
+                delete query[k];
+        });
+
         const [error, data] = await resolver<ProductStock[]>(
-            knex(this.tableName).where({stockId}),
-            {
-                singleOnly: true
-            }
+            knex(this.tableName).where(query),
         )
         return [error, data[0]]
     }
@@ -46,7 +51,7 @@ export class ProductStockModel {
         return error;
     }
 
-    static async updateStockDataEntry(stockId:string, stockData: ProductStock): Promise<any> {
+    static async updateStockDataEntry(stockId:string, stockData: any): Promise<any> {
         const [error] = await resolver<any>(
             knex(this.tableName).where({stockId}).update(stockData),
             {allowUndefined: true});

@@ -17,16 +17,16 @@ export class ProductModel {
      * Find finishedProduct record by product ID
      *: UUID (string)
      */
-    static async findBy_productID(query: any): Promise<[MError,Product[]]> {
+    static async findBy_query(query: any): Promise<[MError,Product[]]> {
 
         const fields = ["productId", "productName"]
-
         Object.keys(query).forEach((k) => {
             if (fields.includes(k))
                 (query[k] === null || query[k] === undefined) && delete query[k];
             else
                 delete query[k];
         });
+
         const [error, data] = await resolver<any>(
             knex(this.tableName).where(query)
         )
@@ -42,7 +42,7 @@ export class ProductModel {
     }
 
     static async deleteBy_productID(productId: string): Promise<any> {
-        const error = await resolver<any>(
+        const [error] = await resolver<any>(
             knex(this.tableName).where({productId}).del(),
             {
                 allowUndefined: true
@@ -51,7 +51,7 @@ export class ProductModel {
         return error;
     }
 
-    static async updateProductDataEntry(productId:string, productData: Product): Promise<any> {
+    static async updateProductDataEntry(productId:string, productData: any): Promise<any> {
         const [error] = await resolver<any>(
             knex(this.tableName).where({productId}).update(productData),
             {allowUndefined: true});

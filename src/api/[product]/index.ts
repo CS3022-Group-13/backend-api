@@ -1,35 +1,35 @@
 import {Router} from "express";
 
- /**
-  * product end points
-  */
+const rProduct = Router();
+
+/**
+ * product end points
+ */
 
 import registerProduct from "./register";
 import deleteProduct from "./delete";
 import viewProduct from "./view";
-import updateProduct from "./update"
+import updateProduct from "./update";
+
+rProduct.post("/register", registerProduct);
+rProduct.delete("/delete/:productId", deleteProduct);
+rProduct.get("/view", viewProduct);
+rProduct.put("/update/:productId", updateProduct);
+
 
 /**
  * stock end points
  */
 
-import registerStock from "./registerstock";
-import deleteStock from "./deletestock";
-import viewStock from "./viewstock";
-import updateStock from "./updatestock";
+import registerStock from "./stock/register";
+import deleteStock from "./stock/delete";
+import viewStock from "./stock/view";
+import updateStock from "./stock/update";
 
-const rProduct = Router();
-
-rProduct.get('/')
-rProduct.post('/register',registerProduct)
-rProduct.delete('/delete/:productId',deleteProduct)
-rProduct.get('/view',viewProduct)
-rProduct.put('/update/:productId',updateProduct)
-
-rProduct.post('/registerstock',registerStock)
-rProduct.delete('/deletestock/:stockId',deleteStock)
-rProduct.get('/viewstock/:stockId',viewStock)
-rProduct.put('/updatestock/:stockId',updateStock)
+rProduct.post("/stock/register", registerStock);
+rProduct.delete("/stock/delete/:stockId", deleteStock);
+rProduct.get("/stock/view", viewStock);
+rProduct.put("/stock/update/:stockId", updateStock);
 
 
-export default rProduct
+export default rProduct;
