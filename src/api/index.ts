@@ -16,10 +16,12 @@ import rCustomer from "./[customer]";
 import rOrder from "./[order]";
 import rProduct from "./[product]";
 import rMaterial from "./[material]";
+import rPayment from "./[payment]";
 
 rApi.use("/user", rUser)
 rApi.use("/customer", rCustomer)
 rApi.use("/order", rOrder)
+rApi.use("/payment", rPayment)
 rApi.use("/product", rProduct)
 rApi.use("/material", rMaterial)
 
