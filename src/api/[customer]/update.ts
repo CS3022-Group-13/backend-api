@@ -24,7 +24,7 @@ const updateUserDetails: Handler = async (req, res) => {
     const {r} = res;
 
     // Setup Data
-    const userId = req.params.userId;
+    const customerId = req.params.customerId;
     const customerData = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -33,14 +33,11 @@ const updateUserDetails: Handler = async (req, res) => {
     };
 
     // Sync model to database
-    const error = await model.customer.customer.updateBy_customerId(userId, customerData);
+    const error = await model.customer.customer.updateBy_customerId(customerId, customerData);
 
     if (error === model.ERR.NO_ERROR) {
         r.status.OK()
             .message("Updated")
-            .data({
-                userId
-            })
             .send();
         return;
     }
