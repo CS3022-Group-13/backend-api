@@ -39,6 +39,11 @@ export class CustomerModel {
                 delete query[k];
         });
 
+        if (query.customerId) {
+            query["customer.customerId"] = query.customerId
+            delete query.customerId
+        }
+
         const [error, data] = await resolver(
             knex(this.tableName).join("customerAccount",
                 "customer.customerId", "=", "customerAccount.customerId"

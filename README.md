@@ -28,7 +28,7 @@ JWT_EXP_TIME_REFRESH=
 ## Notes
 Use following data if you hope to connect shared postgres database,\
 ```yaml
-HOST      : ec2-100-25-45-111.compute-1.amazonaws.com
+HOST      :  ec2-54-160-86-0.compute-1.amazonaws.com 
 PORT      : 5432
 DATABASE  : eims
 USERNAME  : eims_user
