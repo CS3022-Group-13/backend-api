@@ -2,7 +2,7 @@ import {MError} from "../merror";
 import {knex, resolver} from "../index";
 import { OrderItem, OrderItemModel } from './order_item';
 import { Invoice, InvoiceModel } from './invoice';
-import { ProductModel } from "../product/product";
+
 
 export interface Order {
     orderId: string
@@ -34,8 +34,7 @@ export class OrderModel {
                     await InvoiceModel.trx_createInvoiceDataEntry(trx, invoiceData);
 
                     for(let item of orderItemsData){
-                        const [error, product] = await ProductModel.findBy_productId(item.productId);
-                        await ProductModel.reduceProductQuantity(trx, product, item.quantity);      
+                        await trx.raw(`CALL reduce_product_quantity('${item.productId}', ${item.quantity});`);
                     }
                 }
             ), {allowUndefined: true}
