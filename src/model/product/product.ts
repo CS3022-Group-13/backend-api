@@ -54,9 +54,9 @@ export class ProductModel {
 
     static async deleteBy_productID(productId: string): Promise<any> {
         const [error] = await resolver<any>(
-            knex.transaction(async trx => {
+            knex.transaction(async (trx): Promise<any> => {
                 await trx("productStock").where({productId}).del()
-                return trx(this.tableName).where({productId}).del()
+                await trx(this.tableName).where({productId}).del()
             })
         );
         return error;
