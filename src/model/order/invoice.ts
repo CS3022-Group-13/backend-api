@@ -5,7 +5,7 @@ import { Transaction } from "knex";
 export interface Invoice {
     invoiceId: string
     orderId: string
-    invoiceDate: string
+    invoiceDate: Date
     invoiceTotal: string
 }
 

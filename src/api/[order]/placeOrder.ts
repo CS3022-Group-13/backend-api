@@ -11,7 +11,6 @@ import { body, inspectBuilder } from '../../utils/inspect';
 
 const inspector = inspectBuilder(
 	body('customerId').exists().withMessage('Customer ID is required'),
-	body('orderDate').exists().withMessage('Order Date is required'),
 	body('orderItems').exists().withMessage('Order Items are required'),
 	body('orderTotal').exists().withMessage('Order Total is required')
 );
@@ -48,7 +47,7 @@ const addOrderDetails: Handler = async (req, res) => {
 		orderId: UUID(),
 		customerId,
 		orderStatus: model.order.status.PLACED,
-		orderDate: req.body.orderDate
+		orderDate: new Date()
 	};
 
 	const orderItemsData = req.body.orderItems;
@@ -62,7 +61,7 @@ const addOrderDetails: Handler = async (req, res) => {
 	const invoiceData = {
 		invoiceId: UUID(),
 		orderId: orderData.orderId,
-		invoiceDate: orderData.orderDate,
+		invoiceDate: new Date(),
 		invoiceTotal: req.body.orderTotal
 	};
 

@@ -9,7 +9,7 @@ export interface Order {
     orderId: string
     customerId: string
     orderStatus: string
-    orderDate: string
+    orderDate: Date
 }
 
 export class OrderModel {
