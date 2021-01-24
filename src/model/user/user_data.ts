@@ -58,6 +58,27 @@ export class UserDataModel {
         return [error, data as UserData]
     }
 
+    static async getUsersCountBy_query(query: any): Promise<[MError, number]> {
+        // Cleaning Query
+        const fields = ["verified", "userType"]
+        Object.keys(query).forEach((k) => {
+            if (fields.includes(k))
+                (query[k] === null || query[k] === undefined) && delete query[k];
+            else
+                delete query[k];
+        });
+       
+        const [error, data] = await resolver(
+            knex(this.tableName).join("userAccount",
+                "userData.userId", "=", "userAccount.userId"
+            ).count(
+                "userData.*",
+                "userAccount.verified"
+            ).where(query)
+        )
+        return [error, data as number];
+    }
+
     static async getUserDetails(userId: string): Promise<[MError, UserData]> {
         const [error, data] = await resolver(
             knex(this.tableName).join("userAccount",
