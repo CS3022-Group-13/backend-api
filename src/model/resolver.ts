@@ -27,6 +27,7 @@ export async function knex_error_resolver<T>(qb: Query, options: ResolverOption 
                 console.log("[ERROR][DB]: Duplicate database entry.")
                 return [MError.DUPLICATE_ENTRY, {} as T];
             case "23503":
+                console.log(e)
                 console.log("[ERROR][DB]: Violate Foreign Key Constrain")
                 return [MError.FOREIGN_KEY, {} as T];
             default:

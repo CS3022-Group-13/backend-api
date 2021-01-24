@@ -10,8 +10,8 @@ import {body, inspectBuilder, param} from "../../utils/inspect";
 const inspector = inspectBuilder(
     param("customerId").optional()
         .isUUID(4).withMessage("Invalid customer id"),
-    body("password").exists().withMessage("specify new password"),
-    body("status").exists().isBoolean().withMessage("status not valid")
+    body("password").optional().exists().withMessage("specify new password"),
+    body("status").optional().exists().isBoolean().withMessage("status not valid")
 );
 
 /**
@@ -25,11 +25,12 @@ const updateCustomerCredentials: Handler = async (req, res) => {
 
     // Setup Data
     const customerId = req.params.customerId;
-    const hashed = await encrypt_password(req.body.password);
-    const data = {
-        password: hashed,
+    const data: any = {
         status: req.body.status
-    }
+    };
+
+    if (req.body.password)
+        data.password = await encrypt_password(req.body.password);
 
     // Update credentials
     const error = await model.customer.account.updateBy_customerId(customerId, data);

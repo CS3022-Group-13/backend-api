@@ -58,7 +58,7 @@ export class CustomerAccountModel {
             return MError.NO_ERROR
         }
 
-        const [error] = await resolver<CustomerAccount[]>(
+        const [error] = await resolver(
             knex(this.tableName).update(data).where({customerId}),
             {allowUndefined: true}
         );
