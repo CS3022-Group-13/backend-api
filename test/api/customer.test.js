@@ -6,18 +6,20 @@ describe('api/customer routes',() => {
     afterEach(() => {server.close();});
 
     describe('register customer',() => {
+        const data = {
+            username : 'dasith1235',
+            password : 'dasith',
+            firstName :'dasith',
+            lastName : 'ediri',
+            email : 'udasith123@gmail.com',
+            telephone : '07728902258'
+        }
         it('should register a customer', async () => {
             const res = await request(server)
-            .post('api/customer/add-customer')
-            .send({
-                username : 'dasith',
-                password : 'dasith',
-                firstName :'dasith',
-                lastName : 'ediri',
-                email : 'udasith@gmail.com',
-                telephone : '0772890264'
-            });
-            expect(res.statusCode).toBe('200');
+            .post('/api/customer/add-customer')
+            .send(data);
+
+            expect(res.status).toBe('200');
         
         });
     });
